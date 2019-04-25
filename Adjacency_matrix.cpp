@@ -4,9 +4,17 @@
 
 #include "Adjacency_matrix.h"
 
-Adjacency_matrix::Adjacency_matrix(int vertex_number, int edge_number) {
-    this->edge_number = edge_number;
-    this->vertex_number = vertex_number;
+Adjacency_matrix::Adjacency_matrix(string file_name) {
+
+    ifstream in_file;
+    in_file.open(("../" + file_name));
+    if (!in_file) {
+        cout << "Nie można otworzyć pliku\n";
+        exit(1); // terminate with error
+    }
+
+    in_file >> edge_number;
+    in_file >> vertex_number;
 
     matrix = new Edge *[vertex_number];
 
@@ -24,7 +32,7 @@ Adjacency_matrix::Adjacency_matrix(int vertex_number, int edge_number) {
     }
 
     for (int i = 0; i < edge_number; ++i) {
-        cin >> x >> y;
+        in_file >> x >> y >> w;
         matrix[x][y].exists = 1;
     }
 }

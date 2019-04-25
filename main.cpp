@@ -7,17 +7,11 @@ using namespace std;
 
 
 int main() {
-    int vertex_number, edge_number;
+//    Adjacency_matrix *matrix = new Adjacency_matrix("x.txt");
+//    matrix->print();
 
-    cout << "Podaj liczbe wierzcholkow i krawedzi: ";
-    cin >> vertex_number >> edge_number;
-
-
-    Adjacency_matrix* matrix = new Adjacency_matrix(vertex_number, edge_number);
-    matrix->print();
-
-//    Adjacency_list* list = new Adjacency_list(vertex_number, edge_number);
-//    list->print();
+    Adjacency_list* list = new Adjacency_list("x.txt");
+    list->print();
 
     return 0;
 }

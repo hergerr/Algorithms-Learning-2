@@ -5,21 +5,24 @@
 #ifndef ALGORITHMS_LEARNING_2_ADJACENCY_MATRIX_H
 #define ALGORITHMS_LEARNING_2_ADJACENCY_MATRIX_H
 
+#include<fstream>
 #include <iostream>
 
 using namespace std;
 
 class Adjacency_matrix {
-    struct Edge{
+    struct Edge {
         int exists, weight;
     };
     int vertex_number, edge_number;
     Edge **matrix;
-    int x, y;//poczatek i koniec krawedzi
+    int x, y, w;//poczatek, koniec i waga krawedzi w pliku
 
 public:
-    Adjacency_matrix(int vertex_number, int edge_number);
+    Adjacency_matrix(string file_name);
+
     ~Adjacency_matrix();
+
     void print();
 };
 

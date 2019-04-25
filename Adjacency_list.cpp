@@ -4,9 +4,17 @@
 
 #include "Adjacency_list.h"
 
-Adjacency_list::Adjacency_list(int vertex_number, int edge_number) {
-    this->vertex_number = vertex_number;
-    this->edge_number = edge_number;
+Adjacency_list::Adjacency_list(string file_name) {
+
+    ifstream in_file;
+    in_file.open(("../" + file_name));
+    if (!in_file) {
+        cout << "Nie można otworzyć pliku\n";
+        exit(1); // terminate with error
+    }
+
+    in_file >> edge_number;
+    in_file >> vertex_number;
 
     list = new List_element* [vertex_number];
     for (int j = 0; j < vertex_number; ++j) {
@@ -14,7 +22,7 @@ Adjacency_list::Adjacency_list(int vertex_number, int edge_number) {
     }
 
     for (int i = 0; i < edge_number; i++) {             // start = wierzcholek, end = polaczenie z niego
-        cin >> start >> end;                            // Wierzchołek startowy i końcowy krawędzi
+        in_file >> start >> end >> weight;              // Wierzchołek startowy i końcowy krawędzi
         List_element* temp = new List_element;          // Tworzymy nowy element
         temp->v = end;                                  // Numerujemy go jako end
         temp->next = list[start];                       // Dodajemy go na początek listy A[start]

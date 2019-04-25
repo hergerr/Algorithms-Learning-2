@@ -6,6 +6,7 @@
 #define ALGORITHMS_LEARNING_2_ADJACENCY_LIST_H
 
 #include <iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -16,11 +17,11 @@ class Adjacency_list {
         int weight;
     };
 
-    int vertex_number, edge_number, start, end;
+    int vertex_number, edge_number, start, end, weight;
     List_element **list;
 
 public:
-    Adjacency_list(int vertex_number, int edge_number);
+    Adjacency_list(string file_name);
     ~Adjacency_list();
     void print();
 
