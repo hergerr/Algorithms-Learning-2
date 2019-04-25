@@ -13,6 +13,7 @@ class Adjacency_list {
     struct List_element {
         List_element *next;
         int v;
+        int weight;
     };
 
     int vertex_number, edge_number, start, end;
@@ -20,6 +21,7 @@ class Adjacency_list {
 
 public:
     Adjacency_list(int vertex_number, int edge_number);
+    ~Adjacency_list();
     void print();
 
 };

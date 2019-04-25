@@ -13,11 +13,11 @@ int main() {
     cin >> vertex_number >> edge_number;
 
 
-//    Adjacency_matrix* matrix = new Adjacency_matrix(vertex_number, edge_number);
-//    matrix->print();
+    Adjacency_matrix* matrix = new Adjacency_matrix(vertex_number, edge_number);
+    matrix->print();
 
-    Adjacency_list* list = new Adjacency_list(vertex_number, edge_number);
-    list->print();
+//    Adjacency_list* list = new Adjacency_list(vertex_number, edge_number);
+//    list->print();
 
     return 0;
 }

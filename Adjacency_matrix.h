@@ -10,12 +10,16 @@
 using namespace std;
 
 class Adjacency_matrix {
+    struct Edge{
+        int exists, weight;
+    };
     int vertex_number, edge_number;
-    int **matrix;
+    Edge **matrix;
     int x, y;//poczatek i koniec krawedzi
 
 public:
     Adjacency_matrix(int vertex_number, int edge_number);
+    ~Adjacency_matrix();
     void print();
 };
 
