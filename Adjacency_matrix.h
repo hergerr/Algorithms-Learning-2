@@ -19,9 +19,11 @@ class Adjacency_matrix {
     int x, y, w;//poczatek, koniec i waga krawedzi w pliku
 
 public:
-    Adjacency_matrix(string file_name);
+    Adjacency_matrix();
 
     ~Adjacency_matrix();
+
+    void load_from_file(string file_name);
 
     void print();
 };

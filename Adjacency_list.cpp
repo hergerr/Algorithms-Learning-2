@@ -4,8 +4,25 @@
 
 #include "Adjacency_list.h"
 
-Adjacency_list::Adjacency_list(string file_name) {
+Adjacency_list::Adjacency_list() {
 
+}
+
+
+Adjacency_list::~Adjacency_list() {
+    for (int i = 0; i < vertex_number; i++) {
+        List_element *prev = list[i];
+        List_element *current = list[i];
+        while (current) {
+            prev = current;
+            current = current->next;
+            delete prev;
+        }
+    }
+    delete[] list;
+}
+
+void Adjacency_list::load_from_file(string file_name) {
     ifstream in_file;
     in_file.open(("../" + file_name));
     if (!in_file) {
@@ -16,46 +33,31 @@ Adjacency_list::Adjacency_list(string file_name) {
     in_file >> edge_number;
     in_file >> vertex_number;
 
-    list = new List_element* [vertex_number];
+    list = new List_element *[vertex_number];
     for (int j = 0; j < vertex_number; ++j) {
         list[j] = NULL;
     }
 
     for (int i = 0; i < edge_number; i++) {             // start = wierzcholek, end = polaczenie z niego
         in_file >> start >> end >> weight;              // Wierzchołek startowy i końcowy krawędzi
-        List_element* temp = new List_element;          // Tworzymy nowy element
+        List_element *temp = new List_element;          // Tworzymy nowy element
         temp->v = end;                                  // Numerujemy go jako end
         temp->next = list[start];                       // Dodajemy go na początek listy A[start]
         list[start] = temp;
     }
-
-}
-
-
-Adjacency_list::~Adjacency_list() {
-    for(int i = 0; i < vertex_number; i++)
-    {
-        List_element* prev = list[i];
-        List_element* current = list[i];
-        while(current)
-        {
-            prev = current;
-            current = current->next;
-            delete prev;
-        }
-    }
-    delete [] list;
 }
 
 void Adjacency_list::print() {
     for (int j = 0; j < vertex_number; ++j) {
         cout << "List[" << j << "]: ";
-        List_element *temp  = list[j];
-        while(temp != NULL){
+        List_element *temp = list[j];
+        while (temp != NULL) {
             cout << temp->v << " ";
             temp = temp->next;
         }
         cout << endl;
     }
 }
+
+
 

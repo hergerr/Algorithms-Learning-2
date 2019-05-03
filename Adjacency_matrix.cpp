@@ -4,8 +4,25 @@
 
 #include "Adjacency_matrix.h"
 
-Adjacency_matrix::Adjacency_matrix(string file_name) {
+Adjacency_matrix::Adjacency_matrix() {
+}
 
+
+void Adjacency_matrix::print() {
+    for (int i = 0; i < vertex_number; ++i) {
+        for (int j = 0; j < vertex_number; ++j) {
+            cout << matrix[i][j].exists << " ";
+        }
+        cout << endl;
+    }
+}
+
+Adjacency_matrix::~Adjacency_matrix() {
+    for (int i = 0; i < vertex_number; i++) delete[] matrix[i];
+    delete[] matrix;
+}
+
+void Adjacency_matrix::load_from_file(string file_name) {
     ifstream in_file;
     in_file.open(("../" + file_name));
     if (!in_file) {
@@ -35,18 +52,4 @@ Adjacency_matrix::Adjacency_matrix(string file_name) {
         in_file >> x >> y >> w;
         matrix[x][y].exists = 1;
     }
-}
-
-void Adjacency_matrix::print() {
-    for (int i = 0; i < vertex_number; ++i) {
-        for (int j = 0; j < vertex_number; ++j) {
-            cout << matrix[i][j].exists << " ";
-        }
-        cout << endl;
-    }
-}
-
-Adjacency_matrix::~Adjacency_matrix() {
-    for(int i = 0; i < vertex_number; i++) delete [] matrix[i];
-    delete [] matrix;
 }

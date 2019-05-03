@@ -26,14 +26,54 @@ void Menu::displayMenuShortestPath() {
     cout << "5. Algorytm Forda-Bellmana" << endl;
     cout << "0. Powrot do menu" << endl;
     cout << "Podaj opcje:";
+
 }
 
 void Menu::menuMST() {
     char option;
+    int value;
+    string file_name;
+    Adjacency_list al;
+    Adjacency_matrix am;
 
     do{
         displayMenuMST();
         cin >> option;
+        switch (option){
+            case '1': // wczytanie z pliku
+                cout << "Podaj nazwe pliku:";
+                cin >> file_name;
+                cout << endl;
+
+                al.load_from_file(file_name);
+                al.print();
+                cout << endl;
+
+                am.load_from_file(file_name);
+                am.print();
+                break;
+
+            case '2': // wygenerowanie losowego grafu
+                break;
+
+            case '3': // wyswietlenie
+                al.print();
+                cout << endl;
+
+                am.print();
+                break;
+
+            case '4': // algorytm prima
+//                al.prim();
+//                am.prim();
+                break;
+
+            case '5': // algorytm kruskala
+//                al.kruskal();
+//                am.kruskal();
+                break;
+        }
+
     }
     while (option != '0');
 

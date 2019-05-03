@@ -17,12 +17,17 @@ class Adjacency_list {
         int weight;
     };
 
-    int vertex_number, edge_number, start, end, weight;
+    int vertex_number;
+    int edge_number, start, end, weight;
     List_element **list;
 
 public:
-    Adjacency_list(string file_name);
+    Adjacency_list();
+
     ~Adjacency_list();
+
+    void load_from_file(string file_name);
+
     void print();
 
 };
