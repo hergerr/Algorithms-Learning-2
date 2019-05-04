@@ -5,30 +5,42 @@
 #ifndef ALGORITHMS_LEARNING_2_ADJACENCY_LIST_H
 #define ALGORITHMS_LEARNING_2_ADJACENCY_LIST_H
 
+#include "Edge.h"
 #include <iostream>
 #include <fstream>
+#include <vector>
+#include <list>
+#include <queue>
 
 using namespace std;
 
 class Adjacency_list {
-    struct List_element {
-        List_element *next;
-        int v;
-        int weight;
-    };
+    vector<list<Edge>> graph;
+    vector<list<Edge>> spanning_tree;
+    priority_queue<Edge, vector<Edge>, CompareWeight> priorQueue;
+    bool directed;  // 0 - MST, 1 - SP
+    int nodes;  // ilosc wezlow
+    int edges; // ilosc krawedzi
+    double density;
+    int startNodeSP;
+    const int MAX = 999999999;
 
-    int vertex_number;
-    int edge_number, start, end, weight;
-    List_element **list;
 
 public:
-    Adjacency_list();
-
+    // konstruktor i destruktor
+    Adjacency_list(bool directed);
     ~Adjacency_list();
 
+    // glowne funkcje
     void load_from_file(string file_name);
-
+    vector<list<Edge>> generate(int nodes, double density);
+    void add_edge(int src, int dest, int weight);
     void print();
+    void clear();
+
+    // algorytmy
+    void prim();
+
 
 };
 

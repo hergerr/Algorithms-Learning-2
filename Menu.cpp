@@ -33,7 +33,7 @@ void Menu::menuMST() {
     char option;
     int value;
     string file_name;
-    Adjacency_list al;
+    Adjacency_list al(true);
     Adjacency_matrix am;
 
     do{

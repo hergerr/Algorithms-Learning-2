@@ -4,60 +4,77 @@
 
 #include "Adjacency_list.h"
 
-Adjacency_list::Adjacency_list() {
 
+Adjacency_list::Adjacency_list(bool directed) {
+    this->nodes = 0;
+    this->edges = 0;
+    this->density = 0;
+    this->startNodeSP = 0;
+    this->directed = directed;
 }
-
 
 Adjacency_list::~Adjacency_list() {
-    for (int i = 0; i < vertex_number; i++) {
-        List_element *prev = list[i];
-        List_element *current = list[i];
-        while (current) {
-            prev = current;
-            current = current->next;
-            delete prev;
-        }
-    }
-    delete[] list;
+    clear();
 }
 
-void Adjacency_list::load_from_file(string file_name) {
-    ifstream in_file;
-    in_file.open(("../" + file_name));
-    if (!in_file) {
-        cout << "Nie można otworzyć pliku\n";
-        exit(1); // terminate with error
-    }
 
-    in_file >> edge_number;
-    in_file >> vertex_number;
+void Adjacency_list::load_from_file(string file_name){
+    ifstream file; //strumien do otwierania pliku
+    string str;
+    Edge edge;
 
-    list = new List_element *[vertex_number];
-    for (int j = 0; j < vertex_number; ++j) {
-        list[j] = NULL;
-    }
+    clear();
 
-    for (int i = 0; i < edge_number; i++) {             // start = wierzcholek, end = polaczenie z niego
-        in_file >> start >> end >> weight;              // Wierzchołek startowy i końcowy krawędzi
-        List_element *temp = new List_element;          // Tworzymy nowy element
-        temp->v = end;                                  // Numerujemy go jako end
-        temp->next = list[start];                       // Dodajemy go na początek listy A[start]
-        list[start] = temp;
+    file.open("../" + file_name);
+
+    if(file.is_open()) {
+        file >> this->edges;
+
+        file >> this->nodes;
+
+
+        //wczytywanie kolejnych krawedzi
+        for(int i = 0; i < this->edges; i++) {
+            file >>edge.source >> edge.destination >> edge.weight;
+
+            add_edge(edge.source, edge.destination, edge.weight);
+        }
+
+        file.close();
+    } else {
+        cout << "Nie udalo sie otworzyc pliku." << endl;
     }
 }
 
 void Adjacency_list::print() {
-    for (int j = 0; j < vertex_number; ++j) {
-        cout << "List[" << j << "]: ";
-        List_element *temp = list[j];
-        while (temp != NULL) {
-            cout << temp->v << " ";
-            temp = temp->next;
+    for(int i = 0; i < this->graph.size(); i++) {
+        cout << "Wierzcholek[" << i << "]: ";
+        for (Edge edge : this->graph[i]) {
+            cout <<edge.source << " -> "<< edge.destination << " waga: " << edge.weight << ", ";
         }
         cout << endl;
     }
 }
 
+void Adjacency_list::add_edge(int src, int dest, int weight) {
+    this->graph.resize(this->nodes);
 
+    if(this->directed) {
+        this->graph[src].push_back(Edge(src, dest, weight));
+    } else {
+        this->graph[src].push_back(Edge(src, dest, weight));
+        this->graph[dest].push_back(Edge(dest, src, weight));
+    }
+}
 
+void Adjacency_list::clear() {
+    this->nodes = 0;
+    this->edges = 0;
+    this->density = 0;
+    this->startNodeSP = 0;
+    this->graph.clear();
+    this->graph.resize(0);
+    this->spanning_tree.clear();
+    this->spanning_tree.resize(0);
+    priorQueue = priority_queue<Edge, vector<Edge>, CompareWeight>();
+}
