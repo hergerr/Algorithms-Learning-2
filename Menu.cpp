@@ -33,7 +33,7 @@ void Menu::menuMST() {
     char option;
     int value;
     string file_name;
-    Adjacency_list al(true);
+    Adjacency_list al(false);
     Adjacency_matrix am;
 
     do{
@@ -64,7 +64,7 @@ void Menu::menuMST() {
                 break;
 
             case '4': // algorytm prima
-//                al.prim();
+                al.prim();
 //                am.prim();
                 break;
 

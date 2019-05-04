@@ -17,30 +17,30 @@ using namespace std;
 class Adjacency_list {
     vector<list<Edge>> graph;
     vector<list<Edge>> spanning_tree;
-    priority_queue<Edge, vector<Edge>, CompareWeight> priorQueue;
+    priority_queue<Edge, vector<Edge>, CompareWeight> queue;
     bool directed;  // 0 - MST, 1 - SP
     int nodes;  // ilosc wezlow
     int edges; // ilosc krawedzi
     double density;
     int startNodeSP;
-    const int MAX = 999999999;
 
 
 public:
-    // konstruktor i destruktor
     Adjacency_list(bool directed);
+
     ~Adjacency_list();
 
-    // glowne funkcje
     void load_from_file(string file_name);
-    vector<list<Edge>> generate(int nodes, double density);
+
     void add_edge(int src, int dest, int weight);
+
     void print();
+
+    void print(vector<list<Edge>> spanning_tree);
+
     void clear();
 
-    // algorytmy
     void prim();
-
 
 };
 
