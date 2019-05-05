@@ -4,52 +4,107 @@
 
 #include "Adjacency_matrix.h"
 
-Adjacency_matrix::Adjacency_matrix() {
+Adjacency_matrix::Adjacency_matrix(bool directed) {
+    this->nodes = 0;
+    this->edges = 0;
+    this->density = 0;
+    this->startNodeSP = 0;
+    this->directed = directed;
+}
+
+Adjacency_matrix::~Adjacency_matrix() {
+    clear();
+}
+
+void Adjacency_matrix::load_from_file(string file_name) {
+    ifstream file; //strumien do otwierania pliku
+    string str;
+    Edge edge;
+
+    clear();
+
+    file.open("../" + file_name);
+
+    if (file.is_open()) {
+        file >> this->edges;
+        file >> this->nodes;
+
+        this->graph = new int *[this->nodes];   //tworzenie macierzy sasiedztwa o wymiarach n*n
+
+        for (int k = 0; k < this->nodes; k++) {
+            this->graph[k] = new int[this->nodes];
+        }
+
+        for (int k = 0; k < this->nodes; k++) { //wypelnienie jej zerami
+            for (int l = 0; l < this->nodes; l++) {
+                this->graph[k][l] = 0;
+            }
+        }
+
+
+        // wczytywanie kolejnych krawedzi i dodanie ich do macirzy
+        for (int i = 0; i < this->edges; i++) {
+            file >> edge.source >> edge.destination >> edge.weight;
+            add_edge(edge.source, edge.destination, edge.weight);
+        }
+
+        file.close();
+    } else {
+        cout << "Nie udalo sie otworzyc pliku." << endl;
+    }
+}
+
+void Adjacency_matrix::clear() {
+    this->nodes = 0;
+    this->edges = 0;
+    this->density = 0;
+    this->startNodeSP = 0;
+    queue = priority_queue<Edge, vector<Edge>, CompareWeight>();
+
+    for (int i = 0; i < this->nodes; i++) {
+        delete[] this->graph[i];
+    }
+
+    for (int i = 0; i < this->nodes; i++) {
+        delete[] this->spanningTree[i];
+    }
+
+    if (this->nodes > 0) {
+        delete[] this->graph;
+        delete[] this->spanningTree;
+    }
+}
+
+void Adjacency_matrix::add_edge(int src, int dest, int weight) {
+    if (this->directed) {
+        this->graph[src][dest] = weight;
+    } else {
+        this->graph[src][dest] = weight;
+        this->graph[dest][src] = weight;
+    }
 }
 
 
 void Adjacency_matrix::print() {
-    for (int i = 0; i < vertex_number; ++i) {
-        for (int j = 0; j < vertex_number; ++j) {
-            cout << matrix[i][j].exists << " ";
+    cout << endl;
+    for (int i = 0; i < this->nodes; ++i) {
+        for (int j = 0; j < this->nodes; ++j) {
+            cout << this->graph[i][j] << " ";
         }
         cout << endl;
     }
 }
 
-Adjacency_matrix::~Adjacency_matrix() {
-    for (int i = 0; i < vertex_number; i++) delete[] matrix[i];
-    delete[] matrix;
-}
 
-void Adjacency_matrix::load_from_file(string file_name) {
-    ifstream in_file;
-    in_file.open(("../" + file_name));
-    if (!in_file) {
-        cout << "Nie można otworzyć pliku\n";
-        exit(1); // terminate with error
-    }
+void Adjacency_matrix::print(int **graph) {
+    cout << endl;
 
-    in_file >> edge_number;
-    in_file >> vertex_number;
-
-    matrix = new Edge *[vertex_number];
-
-
-    //tworzenie wierszy macierzy
-    for (int i = 0; i < vertex_number; ++i)
-        matrix[i] = new Edge[vertex_number];
-
-
-    //zapelnienie jej zerami
-    for (int i = 0; i < vertex_number; ++i) {
-        for (int j = 0; j < vertex_number; ++j) {
-            matrix[i][j].exists = 0;
+    for (int i = 0; i < this->nodes; ++i) {
+        for (int j = 0; j < this->nodes; ++j) {
+            cout << graph[i][j] << " ";
         }
-    }
-
-    for (int i = 0; i < edge_number; ++i) {
-        in_file >> x >> y >> w;
-        matrix[x][y].exists = 1;
+        cout << endl;
     }
 }
+
+

@@ -5,27 +5,50 @@
 #ifndef ALGORITHMS_LEARNING_2_ADJACENCY_MATRIX_H
 #define ALGORITHMS_LEARNING_2_ADJACENCY_MATRIX_H
 
-#include<fstream>
-#include <iostream>
+#include<string>
+#include <queue>
+#include <list>
+#include<iostream>
+#include <fstream>
+#include "Edge.h"
 
 using namespace std;
 
 class Adjacency_matrix {
-    struct Edge {
-        int exists, weight;
-    };
-    int vertex_number, edge_number;
-    Edge **matrix;
-    int x, y, w;//poczatek, koniec i waga krawedzi w pliku
+    int **graph;
+    int **spanningTree;
+    priority_queue<Edge, vector<Edge>, CompareWeight> queue;
+    bool directed;  // 0 - MST, 1 - SP
+    int nodes;  // ilosc wezlow
+    int edges; // ilosc krawedzi
+    double density;
+    int startNodeSP;
+    const int MAX = 999999999;
 
 public:
-    Adjacency_matrix();
+    Adjacency_matrix(bool directed);
 
     ~Adjacency_matrix();
 
-    void load_from_file(string file_name);
+    void load_from_file(string fileName);
+
+    void generate(vector<list<Edge>> g);
+
+    void add_edge(int src, int dest, int weight);
 
     void print();
+
+    void print(int **graph);
+
+    void clear();
+
+    void prim();
+
+    void kruskal();
+
+    void dijkstra();
+
+    void fordBellman();
 };
 
 

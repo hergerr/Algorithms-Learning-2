@@ -34,7 +34,7 @@ void Menu::menuMST() {
     int value;
     string file_name;
     Adjacency_list al(false);
-    Adjacency_matrix am;
+    Adjacency_matrix am(false);
 
     do{
         displayMenuMST();
