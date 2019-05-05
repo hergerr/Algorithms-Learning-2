@@ -96,29 +96,45 @@ void Adjacency_list::prim() {
 
         auto iterator = this->graph[node].begin();
 
-        while (iterator != this->graph[node].end()) {
-            if (!visited[node]) {
-                queue.push(*iterator);
+        if (!visited[node]) {
+            while (iterator != this->graph[node].end()) {
+                if (!visited[(*iterator).destination]) {    //unikniecie dodania do kolejki odwiedzonych wierzcholkow
+                    queue.push(*iterator);
+                }
+                ++iterator;
             }
-            ++iterator;
-        }
 
+            minimal_weight_edge = queue.top();
+            queue.pop();
 
-        minimal_weight_edge = queue.top();
-        queue.pop();
+            if (!visited[minimal_weight_edge.destination]) {   //jako ze graf jest niekierowany trzeba dodac 2 krawedzie na raz
+                this->spanning_tree[minimal_weight_edge.source].push_back(
+                        Edge(minimal_weight_edge.source, minimal_weight_edge.destination, minimal_weight_edge.weight));
+                this->spanning_tree[minimal_weight_edge.destination].push_back(
+                        Edge(minimal_weight_edge.destination, minimal_weight_edge.source, minimal_weight_edge.weight));
 
-        //jako ze graf jest niekierowany trzeba dodac 2 krawedzie na raz
-        if (!visited[minimal_weight_edge.destination]) {
-            this->spanning_tree[node].push_back(
+                weight += minimal_weight_edge.weight;
+            }
+
+            visited[node] = true;
+
+        } else { // jesli node jest nieodwiedzony to wszystko juz jest w kolejce
+            minimal_weight_edge = queue.top();
+            queue.pop();
+
+            this->spanning_tree[minimal_weight_edge.source].push_back(
                     Edge(minimal_weight_edge.source, minimal_weight_edge.destination, minimal_weight_edge.weight));
-            weight += minimal_weight_edge.weight;
-        }
+            this->spanning_tree[minimal_weight_edge.destination].push_back(
+                    Edge(minimal_weight_edge.destination, minimal_weight_edge.source, minimal_weight_edge.weight));
 
-        visited[node] = true;
+            weight += minimal_weight_edge.weight;
+            j--;
+        }
         node = minimal_weight_edge.destination;
     }
 
     print(spanning_tree);
+    cout << endl << "Suma wag: " << weight << endl;
 
     delete[] visited;
     clear();

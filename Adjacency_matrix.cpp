@@ -41,7 +41,6 @@ void Adjacency_matrix::load_from_file(string file_name) {
             }
         }
 
-
         // wczytywanie kolejnych krawedzi i dodanie ich do macirzy
         for (int i = 0; i < this->edges; i++) {
             file >> edge.source >> edge.destination >> edge.weight;
@@ -108,14 +107,14 @@ void Adjacency_matrix::print(int **graph) {
 }
 
 void Adjacency_matrix::prim() {
-    bool *visited = new bool[this->nodes];     // tablica informujaca o tym, czy dany wierzcholek byl odwiedzony
+    bool *visited = new bool[this->nodes];          // tablica informujaca o tym, czy dany wierzcholek byl odwiedzony
 
     for (int i = 0; i < this->nodes; i++) {
         visited[i] = false;
     }
 
-    // stworzenie i wypelnienie drzewa rozpinajacego
-    this->spanningTree = new int *[this->nodes];
+    this->spanningTree = new int *[this->nodes];    // stworzenie i wypelnienie drzewa rozpinajacego
+
 
     for (int k = 0; k < this->nodes; k++) {
         this->spanningTree[k] = new int[this->nodes];
@@ -127,59 +126,42 @@ void Adjacency_matrix::prim() {
         }
     }
 
-    // numer wierzcholka - zaczynamy od 0
-    int node = 0;
-
-    // sumaryczna waga spanning tree
-    int weight = 0;
+    int node = 0;       // numer wierzcholka - zaczynamy od 0
+    int weight = 0;     // waga calego drzewa
 
     for (int i = 0; i < this->nodes; i++) {
-        Edge minEdge;
+        Edge minimal_weight_edge;
         Edge edge;
 
-        // jesli wierzcholek wczesniej nie byl odwiedzony to dodaje
-        // go do kolejki piorytetowej
         if (!visited[node]) {
-            for (int j = 0; j < this->nodes; j++) {
-                // dodanie wierzcholka do kolejki piorytetowej
-                if (!visited[node] && this->graph[node][j] != MAX) {
-                    edge.source = node;
-                    edge.destination = j;
-                    edge.weight = this->graph[node][j];
-                    queue.push(edge);
-                }
+            for (int j = 0; j < this->nodes; j++) { // dodanie nieodwiedzonych do kolejki priorytetowej
+                edge.source = node;
+                edge.destination = j;
+                edge.weight = this->graph[node][j];
+                queue.push(edge);
             }
 
-            // sciagniecie wierzcholka o najnizszej wadze
-            minEdge = queue.top();
-            // usuniecie tego wierzcholka z kolejki
+            minimal_weight_edge = queue.top();
             this->queue.pop();
 
-            // jesli nie byl jeszcze odwiedzony - dodaje go do spanning tree i zwiekszam wage sumaryczna
-            if (!visited[minEdge.destination]) {
-                this->spanningTree[minEdge.source][minEdge.destination] = minEdge.weight;
-                this->spanningTree[minEdge.destination][minEdge.source] = minEdge.weight;
-                weight += minEdge.weight;
+            if (!visited[minimal_weight_edge.destination]) {             // dodanie do drzewa i zwiekszenie wagi
+                this->spanningTree[minimal_weight_edge.source][minimal_weight_edge.destination] = minimal_weight_edge.weight;
+                this->spanningTree[minimal_weight_edge.destination][minimal_weight_edge.source] = minimal_weight_edge.weight;
+                weight += minimal_weight_edge.weight;
             }
-
-            // oznaczenie wierzcholka jako odwiedzony
-            visited[node] = true;
-        } else {
-            // sciagniecie wierzcholka o najnizszej wadze
-            minEdge = queue.top();
-            // usuniecie tego wierzcholka z kolejki
+            visited[node] = true;     // oznaczenie wierzcholka jako odwiedzony
+        } else {    //jesli byl odwiedzony to jego krawedzie juz sa w kolejce
+            minimal_weight_edge = queue.top();
             this->queue.pop();
 
-            // jesli nie byl jeszcze odwiedzony - dodaje go do spanning tree i zwiekszam wage sumaryczna
-            if (!visited[minEdge.destination]) {
-                this->spanningTree[minEdge.source][minEdge.destination] = minEdge.weight;
-                this->spanningTree[minEdge.destination][minEdge.source] = minEdge.weight;
-                weight += minEdge.weight;
+            if (!visited[minimal_weight_edge.destination]) {
+                this->spanningTree[minimal_weight_edge.source][minimal_weight_edge.destination] = minimal_weight_edge.weight;
+                this->spanningTree[minimal_weight_edge.destination][minimal_weight_edge.source] = minimal_weight_edge.weight;
+                weight += minimal_weight_edge.weight;
             }
-            i--;
+            i--;    //skoro byl juz odwiedzony to nalezy zmienszyc indeks, inaczej petla by nie przeszla po wszytkich wierzcholkach
         }
-        // przejscie do kolejnego wierzcholka
-        node = minEdge.destination;
+        node = minimal_weight_edge.destination;    // przejscie do kolejnego wierzcholka
     }
 
     // wyswietlenie drzewa rozpinajacego
