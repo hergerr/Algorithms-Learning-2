@@ -91,18 +91,19 @@ void Adjacency_list::prim() {
     }
 
 
-    for (int j = 1; j < this->graph.size(); ++j) {
+    for (int j = 0; j < this->graph.size(); ++j) {
         Edge minimal_weight_edge;
 
         auto iterator = this->graph[node].begin();
 
         if (!visited[node]) {
-            while (iterator != this->graph[node].end()) {
+            do {
                 if (!visited[(*iterator).destination]) {    //unikniecie dodania do kolejki odwiedzonych wierzcholkow
                     queue.push(*iterator);
                 }
                 ++iterator;
-            }
+            } while (iterator != this->graph[node].end());
+
 
             minimal_weight_edge = queue.top();
             queue.pop();
@@ -122,12 +123,14 @@ void Adjacency_list::prim() {
             minimal_weight_edge = queue.top();
             queue.pop();
 
-            this->spanning_tree[minimal_weight_edge.source].push_back(
-                    Edge(minimal_weight_edge.source, minimal_weight_edge.destination, minimal_weight_edge.weight));
-            this->spanning_tree[minimal_weight_edge.destination].push_back(
-                    Edge(minimal_weight_edge.destination, minimal_weight_edge.source, minimal_weight_edge.weight));
+            if (!visited[minimal_weight_edge.destination]) {//zabezpieczenie przed dodanie krawedzi do odwiedzonego wierzcholka
+                this->spanning_tree[minimal_weight_edge.source].push_back(
+                        Edge(minimal_weight_edge.source, minimal_weight_edge.destination, minimal_weight_edge.weight));
+                this->spanning_tree[minimal_weight_edge.destination].push_back(
+                        Edge(minimal_weight_edge.destination, minimal_weight_edge.source, minimal_weight_edge.weight));
 
-            weight += minimal_weight_edge.weight;
+                weight += minimal_weight_edge.weight;
+            }
             j--;
         }
         node = minimal_weight_edge.destination;
