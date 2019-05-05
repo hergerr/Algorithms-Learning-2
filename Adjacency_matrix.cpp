@@ -135,10 +135,12 @@ void Adjacency_matrix::prim() {
 
         if (!visited[node]) {
             for (int j = 0; j < this->nodes; j++) { // dodanie nieodwiedzonych do kolejki priorytetowej
-                edge.source = node;
-                edge.destination = j;
-                edge.weight = this->graph[node][j];
-                queue.push(edge);
+                if (graph[node][j] != 0) { //sprawdzenie czy krawedz istnieje
+                    edge.source = node;
+                    edge.destination = j;
+                    edge.weight = this->graph[node][j];
+                    queue.push(edge);
+                }
             }
 
             minimal_weight_edge = queue.top();
