@@ -13,7 +13,7 @@ void Menu::displayMenuMST() {
     cout << "4. Algorytm Prima" << endl;
     cout << "5. Algorytm Kruskala" << endl;
     cout << "0. Powrot do menu" << endl;
-    cout << "Podaj opcje:";
+    cout << "Podaj opcje: ";
 }
 
 void Menu::displayMenuShortestPath() {
@@ -25,7 +25,7 @@ void Menu::displayMenuShortestPath() {
     cout << "4. Algorytm Dijkstry" << endl;
     cout << "5. Algorytm Forda-Bellmana" << endl;
     cout << "0. Powrot do menu" << endl;
-    cout << "Podaj opcje:";
+    cout << "Podaj opcje: ";
 
 }
 
@@ -41,7 +41,7 @@ void Menu::menuMST() {
         cin >> option;
         switch (option){
             case '1': // wczytanie z pliku
-                cout << "Podaj nazwe pliku:";
+                cout << "Podaj nazwe pliku: ";
                 cin >> file_name;
                 cout << endl;
 
@@ -69,7 +69,8 @@ void Menu::menuMST() {
                 break;
 
             case '5': // algorytm kruskala
-//                al.kruskal();
+                al.kruskal();
+                cout << endl;
                 am.kruskal();
                 break;
         }

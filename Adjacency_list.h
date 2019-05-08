@@ -6,6 +6,7 @@
 #define ALGORITHMS_LEARNING_2_ADJACENCY_LIST_H
 
 #include "Edge.h"
+#include "DisjointSet.h"
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -41,6 +42,8 @@ public:
     void clear();
 
     void prim();
+
+    void kruskal();
 
 };
 
