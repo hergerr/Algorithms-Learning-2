@@ -70,7 +70,7 @@ void Menu::menuMST() {
 
             case '5': // algorytm kruskala
 //                al.kruskal();
-//                am.kruskal();
+                am.kruskal();
                 break;
         }
 

@@ -3,27 +3,51 @@
 //
 
 #include "DisjointSet.h"
+#include <vector>
+
+using namespace std;
+
+#include "DisjointSet.h"
 
 DisjointSet::DisjointSet(int size) {
-    array = new int[size];
+    this->size = size;
+
+    parent = new int[size+1];
+    rank = new int[size+1];
+
+    for(int i = 0; i <= size; i++) {
+        rank[i] = 0;
+        parent[i] = i;
+    }
 }
 
 DisjointSet::~DisjointSet() {
-    delete[] array;
+    delete [] parent;
+    delete [] rank;
     this->size = 0;
 }
 
-int DisjointSet::find(int x) {   //znajduje nazwe zbioru w ktorym jest node
-    return array[x];
+// znajduje rodzica podanego wierzcholka - sprawdza w jakim zbiorze jest dany element
+int DisjointSet::find_parent(int node) {
+    if(node != parent[node]) {
+        parent[node] = find_parent(parent[node]);
+    }
+    return parent[node];
 }
 
 
-void DisjointSet::make_union(int x, int y) { //laczy zbiory
-    int rx, ry, i;
-    rx = array[x]; //nazwa zbioru gdzie znajduje sie x
-    ry = array[y];
+// laczy 2 zbiory w jeden
+void DisjointSet::make_union(int u, int v) {
+    u = find_parent(u);
+    v = find_parent(v);
 
-    if(rx != ry)
-        for(int i = 0; i < size; ++i)
-            if(array[i] == ry) array[i] = rx;
+    if (rank[u] > rank[v]) {
+        parent[v] = u;
+    } else {
+        parent[u] = v;
+    }
+
+    if (rank[u] == rank[v]) {
+        rank[v]++;
+    }
 }

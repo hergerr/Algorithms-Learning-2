@@ -11,6 +11,7 @@
 #include<iostream>
 #include <fstream>
 #include "Edge.h"
+#include "DisjointSet.h"
 
 using namespace std;
 

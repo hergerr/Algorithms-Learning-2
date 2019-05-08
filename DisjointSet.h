@@ -5,16 +5,21 @@
 #ifndef ALGORITHMS_LEARNING_2_DISJOINTSET_H
 #define ALGORITHMS_LEARNING_2_DISJOINTSET_H
 
+#include <vector>
+#include "Edge.h"
+
+using namespace std;
 
 class DisjointSet {
-    int *array;
-    int size;
+    int* parent;
+    int* rank;
+    int size;  // size
 
 public:
-    DisjointSet(int size);
+    explicit DisjointSet(int size);
     ~DisjointSet();
 
-    int find(int x);
+    int find_parent(int node);
     void make_union(int u, int v);
 };
 
