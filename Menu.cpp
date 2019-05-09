@@ -57,18 +57,21 @@ void Menu::menuMST() {
                 break;
 
             case '3': // wyswietlenie
+                cout << endl;
                 al.print();
                 cout << endl;
-
                 am.print();
                 break;
 
             case '4': // algorytm prima
+                cout << endl;
                 al.prim();
+                cout << endl;
                 am.prim();
                 break;
 
             case '5': // algorytm kruskala
+                cout << endl;
                 al.kruskal();
                 cout << endl;
                 am.kruskal();

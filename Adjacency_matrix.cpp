@@ -58,20 +58,11 @@ void Adjacency_matrix::clear() {
     this->edges = 0;
     this->density = 0;
     this->startNodeSP = 0;
-    queue = priority_queue<Edge, vector<Edge>, CompareWeight>();
 
     for (int i = 0; i < this->nodes; i++) {
         delete[] this->graph[i];
     }
 
-    for (int i = 0; i < this->nodes; i++) {
-        delete[] this->spanningTree[i];
-    }
-
-    if (this->nodes > 0) {
-        delete[] this->graph;
-        delete[] this->spanningTree;
-    }
 }
 
 void Adjacency_matrix::add_edge(int src, int dest, int weight) {
@@ -95,36 +86,16 @@ void Adjacency_matrix::print() {
 }
 
 
-void Adjacency_matrix::print(int **graph) {
-    cout << endl;
-
-    for (int i = 0; i < this->nodes; ++i) {
-        for (int j = 0; j < this->nodes; ++j) {
-            cout << graph[i][j] << " ";
-        }
-        cout << endl;
-    }
-}
-
 void Adjacency_matrix::prim() {
+    cout << "Reprezentacja macierzowa - wynikowe MST uzyskane algorytmem Prima" << endl;
+
     bool *visited = new bool[this->nodes];          // tablica informujaca o tym, czy dany wierzcholek byl odwiedzony
+    priority_queue<Edge, vector<Edge>, CompareWeight> queue;
 
     for (int i = 0; i < this->nodes; i++) {
         visited[i] = false;
     }
 
-    this->spanningTree = new int *[this->nodes];    // stworzenie i wypelnienie drzewa rozpinajacego
-
-
-    for (int k = 0; k < this->nodes; k++) {
-        this->spanningTree[k] = new int[this->nodes];
-    }
-
-    for (int k = 0; k < this->nodes; k++) {
-        for (int l = 0; l < this->nodes; l++) {
-            this->spanningTree[k][l] = 0;
-        }
-    }
 
     int node = 0;       // numer wierzcholka - zaczynamy od 0
     int weight = 0;     // waga calego drzewa
@@ -144,21 +115,21 @@ void Adjacency_matrix::prim() {
             }
 
             minimal_weight_edge = queue.top();
-            this->queue.pop();
+            queue.pop();
 
-            if (!visited[minimal_weight_edge.destination]) {             // dodanie do drzewa i zwiekszenie wagi
-                this->spanningTree[minimal_weight_edge.source][minimal_weight_edge.destination] = minimal_weight_edge.weight;
-                this->spanningTree[minimal_weight_edge.destination][minimal_weight_edge.source] = minimal_weight_edge.weight;
+            if (!visited[minimal_weight_edge.destination]) {
+                cout << minimal_weight_edge.source << " -> " << minimal_weight_edge.destination << "  Waga: "
+                     << minimal_weight_edge.weight << endl;
                 weight += minimal_weight_edge.weight;
             }
             visited[node] = true;     // oznaczenie wierzcholka jako odwiedzony
         } else {    //jesli byl odwiedzony to jego krawedzie juz sa w kolejce
             minimal_weight_edge = queue.top();
-            this->queue.pop();
+            queue.pop();
 
             if (!visited[minimal_weight_edge.destination]) {
-                this->spanningTree[minimal_weight_edge.source][minimal_weight_edge.destination] = minimal_weight_edge.weight;
-                this->spanningTree[minimal_weight_edge.destination][minimal_weight_edge.source] = minimal_weight_edge.weight;
+                cout << minimal_weight_edge.source << " -> " << minimal_weight_edge.destination << "  Waga: "
+                     << minimal_weight_edge.weight << endl;
                 weight += minimal_weight_edge.weight;
             }
             i--;    //skoro byl juz odwiedzony to nalezy zmienszyc indeks, inaczej petla by nie przeszla po wszytkich wierzcholkach
@@ -166,7 +137,6 @@ void Adjacency_matrix::prim() {
         node = minimal_weight_edge.destination;    // przejscie do kolejnego wierzcholka
     }
 
-    print(this->spanningTree);    // wyswietlenie drzewa rozpinajacego
 
     printf("\nSuma wag: %d\n", weight);    // wyswietlenie wag
 
@@ -175,18 +145,7 @@ void Adjacency_matrix::prim() {
 }
 
 void Adjacency_matrix::kruskal() {
-
-    this->spanningTree = new int *[this->nodes];    // stworzenie i wypelnienie drzewa rozpinajacego
-
-    for (int k = 0; k < this->nodes; k++) {
-        this->spanningTree[k] = new int[this->nodes];
-    }
-
-    for (int k = 0; k < this->nodes; k++) {
-        for (int l = 0; l < this->nodes; l++) {
-            this->spanningTree[k][l] = 0;
-        }
-    }
+    cout << "Reprezentacja macierzowa - wynikowe MST uzyskane algorytmem Kruskala" << endl;
 
     DisjointSet disjointSet(this->nodes);
     int weight = 0;
@@ -212,15 +171,13 @@ void Adjacency_matrix::kruskal() {
         edges_queue.pop();
 
         if (set_v1 != set_v2) {
-            this->spanningTree[src][dst] = single_weight;   //dodanie do drzewa rozpinajacego
-            this->spanningTree[dst][src] = single_weight;
+            cout << src << " -> " << dst << "  Waga: " << single_weight << endl;
             weight += single_weight;
             disjointSet.make_union(set_v1, set_v2);
         }
 
     }
 
-    print(this->spanningTree);
     cout << "Waga: " << weight << endl;
     clear();
 

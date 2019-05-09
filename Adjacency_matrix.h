@@ -17,8 +17,6 @@ using namespace std;
 
 class Adjacency_matrix {
     int **graph;
-    int **spanningTree;
-    priority_queue<Edge, vector<Edge>, CompareWeight> queue;
     bool directed;  // 0 - MST, 1 - SP
     int nodes;  // ilosc wezlow
     int edges; // ilosc krawedzi
@@ -38,8 +36,6 @@ public:
     void add_edge(int src, int dest, int weight);
 
     void print();
-
-    void print(int **graph);
 
     void clear();
 

@@ -56,17 +56,6 @@ void Adjacency_list::print() {
     }
 }
 
-void Adjacency_list::print(vector<list<Edge>> spanning_tree) {
-    cout << endl;
-    for (int i = 0; i < spanning_tree.size(); i++) {
-        cout << "Wierzcholek[" << i << "]: ";
-        for (Edge edge : this->spanning_tree[i]) {
-            cout << edge.source << " -> " << edge.destination << " waga: " << edge.weight << ", ";
-        }
-        cout << endl;
-    }
-}
-
 
 void Adjacency_list::add_edge(int src, int dest, int weight) {
     this->graph.resize(this->nodes);
@@ -80,10 +69,12 @@ void Adjacency_list::add_edge(int src, int dest, int weight) {
 }
 
 void Adjacency_list::prim() {
+    cout << "Reprezentacja listowa - wynikowe MST uzyskane algorytmem Prima" << endl;
+
     bool *visited = new bool[this->graph.size()];       // alokacja tablicy odwiedzynych wierzcholkow
     int node = 0;                                       // poczatkowy wierzcholek
-    this->spanning_tree.resize(this->graph.size());     // ustawienie rozmiaru wektora do ilosci wierzcholkow drzewa
     int weight = 0;                                    // waga calego drzewa
+    priority_queue<Edge, vector<Edge>, CompareWeight> queue;
 
 
     for (int i = 0; i < this->graph.size(); i++) {
@@ -109,11 +100,7 @@ void Adjacency_list::prim() {
             queue.pop();
 
             if (!visited[minimal_weight_edge.destination]) {   //jako ze graf jest niekierowany trzeba dodac 2 krawedzie na raz
-                this->spanning_tree[minimal_weight_edge.source].push_back(
-                        Edge(minimal_weight_edge.source, minimal_weight_edge.destination, minimal_weight_edge.weight));
-                this->spanning_tree[minimal_weight_edge.destination].push_back(
-                        Edge(minimal_weight_edge.destination, minimal_weight_edge.source, minimal_weight_edge.weight));
-
+                cout << minimal_weight_edge.source << " -> " << minimal_weight_edge.destination << " Waga: " << minimal_weight_edge.weight << endl;
                 weight += minimal_weight_edge.weight;
             }
 
@@ -124,11 +111,7 @@ void Adjacency_list::prim() {
             queue.pop();
 
             if (!visited[minimal_weight_edge.destination]) {//zabezpieczenie przed dodanie krawedzi do odwiedzonego wierzcholka
-                this->spanning_tree[minimal_weight_edge.source].push_back(
-                        Edge(minimal_weight_edge.source, minimal_weight_edge.destination, minimal_weight_edge.weight));
-                this->spanning_tree[minimal_weight_edge.destination].push_back(
-                        Edge(minimal_weight_edge.destination, minimal_weight_edge.source, minimal_weight_edge.weight));
-
+                cout << minimal_weight_edge.source << " -> " << minimal_weight_edge.destination << " Waga: " << minimal_weight_edge.weight << endl;
                 weight += minimal_weight_edge.weight;
             }
             j--;
@@ -136,7 +119,6 @@ void Adjacency_list::prim() {
         node = minimal_weight_edge.destination;
     }
 
-    print(spanning_tree);
     cout << endl << "Suma wag: " << weight << endl;
 
     delete[] visited;
@@ -150,17 +132,15 @@ void Adjacency_list::clear() {
     this->startNodeSP = 0;
     this->graph.clear();
     this->graph.resize(0);
-    this->spanning_tree.clear();
-    this->spanning_tree.resize(0);
-    queue = priority_queue<Edge, vector<Edge>, CompareWeight>();
 }
 
 void Adjacency_list::kruskal() {
+    cout << "Reprezentacja listowa - wynikowe MST uzyskane algorytmem Kruskala" << endl;
+
     DisjointSet disjointSet(this->nodes);
     int weight = 0;
 
     priority_queue<Edge, vector<Edge>, CompareWeight> edges_queue;  //kolejka priorytetowa - typ przechowywany, kontener, funktor
-    this->spanning_tree.resize(this->graph.size());     // ustawienie rozmiaru wektora do ilosci wierzcholkow drzewa
 
     for (int i = 0; i < this->graph.size(); i++) {
         for (Edge edge : this->graph[i]) {
@@ -180,14 +160,12 @@ void Adjacency_list::kruskal() {
         edges_queue.pop();
 
         if (set_v1 != set_v2) {
-            this->spanning_tree[src].push_back(Edge(src, dst, single_weight));  //dodanie do drzewa rozpinajacego
-            this->spanning_tree[dst].push_back(Edge(dst, src, single_weight));
+            cout << src << " -> " << dst << " Waga: " << single_weight << endl;
             weight += single_weight;
             disjointSet.make_union(set_v1, set_v2);
         }
 
     }
-    print(spanning_tree);
     cout << "Waga: " << weight << endl;
 }
 

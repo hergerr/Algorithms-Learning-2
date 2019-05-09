@@ -17,8 +17,6 @@ using namespace std;
 
 class Adjacency_list {
     vector<list<Edge>> graph;
-    vector<list<Edge>> spanning_tree;
-    priority_queue<Edge, vector<Edge>, CompareWeight> queue;
     bool directed;  // 0 - MST, 1 - SP
     int nodes;  // ilosc wezlow
     int edges; // ilosc krawedzi
