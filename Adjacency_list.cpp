@@ -160,6 +160,7 @@ void Adjacency_list::kruskal() {
     int weight = 0;
 
     priority_queue<Edge, vector<Edge>, CompareWeight> edges_queue;  //kolejka priorytetowa - typ przechowywany, kontener, funktor
+    this->spanning_tree.resize(this->graph.size());     // ustawienie rozmiaru wektora do ilosci wierzcholkow drzewa
 
     for (int i = 0; i < this->graph.size(); i++) {
         for (Edge edge : this->graph[i]) {
@@ -178,14 +179,15 @@ void Adjacency_list::kruskal() {
         int set_v2 = disjointSet.find_parent(dst);
         edges_queue.pop();
 
-        if(set_v1 != set_v2){
-            cout <<  src << " -> " << dst << "  Waga: " << single_weight << endl;
+        if (set_v1 != set_v2) {
+            this->spanning_tree[src].push_back(Edge(src, dst, single_weight));  //dodanie do drzewa rozpinajacego
+            this->spanning_tree[dst].push_back(Edge(dst, src, single_weight));
             weight += single_weight;
             disjointSet.make_union(set_v1, set_v2);
         }
 
     }
-
+    print(spanning_tree);
     cout << "Waga: " << weight << endl;
 }
 

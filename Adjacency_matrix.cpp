@@ -175,6 +175,19 @@ void Adjacency_matrix::prim() {
 }
 
 void Adjacency_matrix::kruskal() {
+
+    this->spanningTree = new int *[this->nodes];    // stworzenie i wypelnienie drzewa rozpinajacego
+
+    for (int k = 0; k < this->nodes; k++) {
+        this->spanningTree[k] = new int[this->nodes];
+    }
+
+    for (int k = 0; k < this->nodes; k++) {
+        for (int l = 0; l < this->nodes; l++) {
+            this->spanningTree[k][l] = 0;
+        }
+    }
+
     DisjointSet disjointSet(this->nodes);
     int weight = 0;
 
@@ -182,7 +195,7 @@ void Adjacency_matrix::kruskal() {
 
     for (int i = 0; i < this->nodes; ++i) {
         for (int j = 0; j < this->nodes; ++j) {
-            if(graph[i][j] != 0)
+            if (graph[i][j] != 0)
                 edges_queue.push(Edge(i, j, this->graph[i][j]));   //dodanie wszystkich krawedzi
         }
     }
@@ -198,16 +211,18 @@ void Adjacency_matrix::kruskal() {
         int set_v2 = disjointSet.find_parent(dst);
         edges_queue.pop();
 
-        if(set_v1 != set_v2){
-            cout <<  src << " -> " << dst << "  Waga: " << single_weight << endl;
+        if (set_v1 != set_v2) {
+            this->spanningTree[src][dst] = single_weight;   //dodanie do drzewa rozpinajacego
+            this->spanningTree[dst][src] = single_weight;
             weight += single_weight;
             disjointSet.make_union(set_v1, set_v2);
         }
 
     }
 
+    print(this->spanningTree);
     cout << "Waga: " << weight << endl;
-
+    clear();
 
 }
 
