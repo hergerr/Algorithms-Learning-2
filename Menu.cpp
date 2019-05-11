@@ -99,7 +99,7 @@ void Menu::menuShortestPath() {
         cout << endl;
         switch (opt){
             case '1': // wczytanie z pliku
-                cout << " Podaj nazwe pliku:";
+                cout << "Podaj nazwe pliku:";
                 cin >> fileName;
 
                 al.load_from_file(fileName);
@@ -119,7 +119,8 @@ void Menu::menuShortestPath() {
 
             case '4': // algorytm dijkstry
                 al.dijkstra();
-//                am.dijkstra();
+                cout << endl;
+                am.dijkstra();
                 break;
 
             case '5': // algorytm forda-bellmana

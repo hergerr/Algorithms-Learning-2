@@ -218,15 +218,11 @@ void Adjacency_list::dijkstra() {
 
     }
 
-    cout << "Koszt: ";
-    for (int i = 0; i < this->nodes; i++)
-        cout << distances[i] << " ";
-
-    cout << endl;
-
-    cout << "Poprzednik: ";
-    for (int i = 0; i < this->nodes; i++)
-        cout << previous[i] << " ";
+    for (int j = 0; j < this->nodes; ++j) {
+        cout << "Dojscie do wierzchlka " << j << ": " << start_node_SP;
+        print_path(previous, j);
+        cout << "   Koszt: " << distances[j] << endl;
+    }
 
 
     delete[] q_s_sets;
@@ -234,4 +230,11 @@ void Adjacency_list::dijkstra() {
     delete[] previous;
     clear();
 }
+
+void Adjacency_list::print_path(int *previous, int i) {
+    if (previous[i] == -1) return;
+    print_path(previous, previous[i]);
+    cout << " -> " << i;
+}
+
 

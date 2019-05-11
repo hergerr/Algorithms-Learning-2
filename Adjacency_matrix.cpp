@@ -188,26 +188,71 @@ void Adjacency_matrix::kruskal() {
 }
 
 void Adjacency_matrix::dijkstra() {
+    priority_queue<pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > > queue;  //kolejka priorytetowa - typ przechowywany, kontener, funktor
+
+
     int node = this->start_node_SP;
 
-    int* distances = new int[this->nodes];
-    for(int i = 0; i < this->nodes; i++) {    // zainicjalizowanie odleglosci dla kazdego wierzcholka
-        distances[i] = MAX;
-    }
+    int *distances = new int[this->nodes];      // tutaj przechowywane sa koszta
+    int *previous = new int[this->nodes];       // tutaj przechowywani sa poprzednicy
+    bool *q_s_sets = new bool[this->nodes];     // tablica mowiaca czy przeszlismy wszystkie wierzcholiki (wtedy sa w zbiorze s)
 
-    int * previous = new int[this->nodes];      // tutaj przechowywani sa poprzednicy
-    for(int i = 0; i < this->nodes; i++) {
-        previous[i] = -1;                       // na poczatku wszystkie maja -1, jako ze nie okreslilismy jeszcze poprzednika
+    for (int i = 0; i < this->nodes; i++) {
+        previous[i] = -1;
+        distances[i] = MAX;
+        q_s_sets[i] = false;    //poczatkowo wszystkie wierzcholki sa w zbiorze q
     }
 
     distances[node] = 0; //koszt dojscia do siebie samego to 0
 
+    queue.push(make_pair(0, node)); //dodanie do kolejki zerowego kosztu i numeru wierzcholka startowego
+
+    while (!queue.empty()) {
+        int u = queue.top().second;     //zdjecie numeru wierzcholka z najnizsza waga
+        queue.pop();
+
+        if (q_s_sets[u] == true) continue;  // jesli wierzcholek jest juz w zbiorze s to pomijamy go
+        q_s_sets[u] = true;                 // inaczej dodaj go do zbioru s
 
 
+        int iterator = 0; // pierwszy sasiad wierzcholka u
 
-    delete [] distances;
-    delete [] previous;
+        while(iterator != this->nodes){
+            if(graph[u][iterator] == 0){
+                iterator++;
+                continue;
+            }
+
+            int number = iterator;    //  numer sasiadujego wierzcholka
+            int weight = graph[u][iterator];         //  waga sasiadujacego wierzcholka
+
+            if(distances[number] > distances[u] + weight){    //  jesli dotychczasowy dystans jest mniejszy od kosztu dojscia do u + waga krawedzie pomiedzy u i v
+                distances[number] = distances[u] + weight;    //  zaktualizuj wartosc dystansu
+                previous[number] = u;                    //  dodaj poprzednika
+                queue.push(make_pair(distances[number], number)); //  wrzucenie do kolejki zaktualizowany koszt dojscia i samego numeru wierzcholka v
+            }
+            iterator++;
+        }
+
+    }
+
+    for (int j = 0; j < this->nodes; ++j) {
+        cout << "Dojscie do wierzchlka " << j << ": " << start_node_SP;
+        print_path(previous, j);
+        cout << "   Koszt: " << distances[j] << endl;
+    }
+
+
+    delete[] q_s_sets;
+    delete[] distances;
+    delete[] previous;
     clear();
+}
+
+void Adjacency_matrix::print_path(int *previous, int i) {
+    if (previous[i] == -1) return;
+    print_path(previous, previous[i]);
+    cout << " -> " << i;
 }
 
 void print_path(int *parent, int i) {

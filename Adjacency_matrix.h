@@ -37,6 +37,8 @@ public:
 
     void print();
 
+    void print_path(int previous[], int i);
+
     void clear();
 
     void prim();
