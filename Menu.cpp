@@ -84,12 +84,49 @@ void Menu::menuMST() {
 }
 
 void Menu::menuShortestPath() {
-    char option;
+    // Dla algorytmow SP graf jest skierowany
+    Adjacency_list al(true);
+    Adjacency_matrix am(true);
+    vector<list<Edge>> g;
 
+    char opt;
+    string fileName;
+    int index, value;
 
     do{
         displayMenuShortestPath();
-        cin >> option;
-    }
-    while (option != '0');
+        cin >> opt;
+        cout << endl;
+        switch (opt){
+            case '1': // wczytanie z pliku
+                cout << " Podaj nazwe pliku:";
+                cin >> fileName;
+
+                al.load_from_file(fileName);
+                al.print();
+
+                am.load_from_file(fileName);
+                am.print();
+                break;
+
+            case '2': // wygenerowanie losowego grafu
+                break;
+
+            case '3': // wyswietlenie
+                al.print();
+                am.print();
+                break;
+
+            case '4': // algorytm dijkstry
+                al.dijkstra();
+//                am.dijkstra();
+                break;
+
+            case '5': // algorytm forda-bellmana
+//                al.fordBellman();
+//                am.fordBellman();
+                break;
+        }
+
+    } while (opt != '0');
 }

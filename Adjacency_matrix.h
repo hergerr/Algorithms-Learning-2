@@ -21,7 +21,7 @@ class Adjacency_matrix {
     int nodes;  // ilosc wezlow
     int edges; // ilosc krawedzi
     double density;
-    int startNodeSP;
+    int start_node_SP;
     const int MAX = 999999999;
 
 public:

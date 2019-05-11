@@ -9,7 +9,7 @@ Adjacency_list::Adjacency_list(bool directed) {
     this->nodes = 0;
     this->edges = 0;
     this->density = 0;
-    this->startNodeSP = 0;
+    this->start_node_SP = 0;
     this->directed = directed;
 }
 
@@ -31,6 +31,10 @@ void Adjacency_list::load_from_file(string file_name) {
         file >> this->edges;
 
         file >> this->nodes;
+
+        if (directed) {
+            file >> this->start_node_SP;
+        }
 
 
         //wczytywanie kolejnych krawedzi
@@ -100,7 +104,8 @@ void Adjacency_list::prim() {
             queue.pop();
 
             if (!visited[minimal_weight_edge.destination]) {   //jako ze graf jest niekierowany trzeba dodac 2 krawedzie na raz
-                cout << minimal_weight_edge.source << " -> " << minimal_weight_edge.destination << " Waga: " << minimal_weight_edge.weight << endl;
+                cout << minimal_weight_edge.source << " -> " << minimal_weight_edge.destination << " Waga: "
+                     << minimal_weight_edge.weight << endl;
                 weight += minimal_weight_edge.weight;
             }
 
@@ -111,7 +116,8 @@ void Adjacency_list::prim() {
             queue.pop();
 
             if (!visited[minimal_weight_edge.destination]) {//zabezpieczenie przed dodanie krawedzi do odwiedzonego wierzcholka
-                cout << minimal_weight_edge.source << " -> " << minimal_weight_edge.destination << " Waga: " << minimal_weight_edge.weight << endl;
+                cout << minimal_weight_edge.source << " -> " << minimal_weight_edge.destination << " Waga: "
+                     << minimal_weight_edge.weight << endl;
                 weight += minimal_weight_edge.weight;
             }
             j--;
@@ -129,7 +135,7 @@ void Adjacency_list::clear() {
     this->nodes = 0;
     this->edges = 0;
     this->density = 0;
-    this->startNodeSP = 0;
+    this->start_node_SP = 0;
     this->graph.clear();
     this->graph.resize(0);
 }
@@ -167,5 +173,66 @@ void Adjacency_list::kruskal() {
 
     }
     cout << "Waga: " << weight << endl;
+}
+
+void Adjacency_list::dijkstra() {
+    pair<int, int> para;    //para wagi i wierzcholka docelowego
+    priority_queue<pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > > queue;  //kolejka priorytetowa - typ przechowywany, kontener, funktor
+
+
+    int node = this->start_node_SP;
+
+    int *distances = new int[this->nodes];      // tutaj przechowywane sa koszta
+    int *previous = new int[this->nodes];       // tutaj przechowywani sa poprzednicy
+    bool *q_s_sets = new bool[this->nodes];     // tablica mowiaca czy przeszlismy wszystkie wierzcholiki (wtedy sa w zbiorze s)
+
+    for (int i = 0; i < this->nodes; i++) {
+        previous[i] = -1;
+        distances[i] = MAX;
+        q_s_sets[i] = false;    //poczatkowo wszystkie wierzcholki sa w zbiorze q
+    }
+
+    distances[node] = 0; //koszt dojscia do siebie samego to 0
+
+    queue.push(make_pair(0, node));
+
+    while (!queue.empty()) {
+        int u = queue.top().second;
+        queue.pop();
+
+        if (q_s_sets[u] == true) continue;
+        q_s_sets[u] = true;
+
+        auto iterator = graph[u].begin();
+
+        while(iterator != graph[u].end()){
+            int v = (*iterator).destination;
+            int c = (*iterator).weight;
+
+            if(distances[v] > distances[u] + c){
+                distances[v] = distances[u] + c;
+                previous[v] = u;
+                queue.push(make_pair(distances[v], v)); //wrzucenie do kolejki zaktualizowany koszt dojscia do syna u(v) i samego numeru wierzcholka v
+            }
+            iterator++;
+        }
+
+    }
+
+    cout << "Koszt: ";
+    for (int i = 0; i < this->nodes; i++)
+        cout << distances[i] << " ";
+
+    cout << endl;
+
+    cout << "Poprzednik: ";
+    for (int i = 0; i < this->nodes; i++)
+        cout << previous[i] << " ";
+
+
+    delete[] q_s_sets;
+    delete[] distances;
+    delete[] previous;
+    clear();
 }
 

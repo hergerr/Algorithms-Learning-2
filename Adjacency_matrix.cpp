@@ -8,7 +8,7 @@ Adjacency_matrix::Adjacency_matrix(bool directed) {
     this->nodes = 0;
     this->edges = 0;
     this->density = 0;
-    this->startNodeSP = 0;
+    this->start_node_SP = 0;
     this->directed = directed;
 }
 
@@ -28,6 +28,10 @@ void Adjacency_matrix::load_from_file(string file_name) {
     if (file.is_open()) {
         file >> this->edges;
         file >> this->nodes;
+
+        if(directed){
+            file >> this->start_node_SP;
+        }
 
         this->graph = new int *[this->nodes];   //tworzenie macierzy sasiedztwa o wymiarach n*n
 
@@ -57,7 +61,7 @@ void Adjacency_matrix::clear() {
     this->nodes = 0;
     this->edges = 0;
     this->density = 0;
-    this->startNodeSP = 0;
+    this->start_node_SP = 0;
 
     for (int i = 0; i < this->nodes; i++) {
         delete[] this->graph[i];
@@ -181,5 +185,36 @@ void Adjacency_matrix::kruskal() {
     cout << "Waga: " << weight << endl;
     clear();
 
+}
+
+void Adjacency_matrix::dijkstra() {
+    int node = this->start_node_SP;
+
+    int* distances = new int[this->nodes];
+    for(int i = 0; i < this->nodes; i++) {    // zainicjalizowanie odleglosci dla kazdego wierzcholka
+        distances[i] = MAX;
+    }
+
+    int * previous = new int[this->nodes];      // tutaj przechowywani sa poprzednicy
+    for(int i = 0; i < this->nodes; i++) {
+        previous[i] = -1;                       // na poczatku wszystkie maja -1, jako ze nie okreslilismy jeszcze poprzednika
+    }
+
+    distances[node] = 0; //koszt dojscia do siebie samego to 0
+
+
+
+
+    delete [] distances;
+    delete [] previous;
+    clear();
+}
+
+void print_path(int *parent, int i) {
+    if(parent[i] == -1) {
+        return;
+    }
+    print_path(parent, parent[i]);
+    printf("-> %d ", i);
 }
 

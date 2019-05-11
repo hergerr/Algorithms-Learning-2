@@ -12,6 +12,7 @@
 #include <vector>
 #include <list>
 #include <queue>
+#include <utility>
 
 using namespace std;
 
@@ -21,7 +22,8 @@ class Adjacency_list {
     int nodes;  // ilosc wezlow
     int edges; // ilosc krawedzi
     double density;
-    int startNodeSP;
+    int start_node_SP;
+    const int MAX = 999999999;
 
 
 public:
@@ -35,13 +37,13 @@ public:
 
     void print();
 
-    void print(vector<list<Edge>> spanning_tree);
-
     void clear();
 
     void prim();
 
     void kruskal();
+
+    void dijkstra();
 
 };
 
