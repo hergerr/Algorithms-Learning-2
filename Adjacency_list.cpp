@@ -176,7 +176,6 @@ void Adjacency_list::kruskal() {
 }
 
 void Adjacency_list::dijkstra() {
-    pair<int, int> para;    //para wagi i wierzcholka docelowego
     priority_queue<pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > > queue;  //kolejka priorytetowa - typ przechowywany, kontener, funktor
 
 
@@ -194,25 +193,25 @@ void Adjacency_list::dijkstra() {
 
     distances[node] = 0; //koszt dojscia do siebie samego to 0
 
-    queue.push(make_pair(0, node));
+    queue.push(make_pair(0, node)); //dodanie do kolejki zerowego kosztu i numeru wierzcholka startowego
 
     while (!queue.empty()) {
-        int u = queue.top().second;
+        int u = queue.top().second;     //zdjecie numeru wierzcholka z najnizsza waga
         queue.pop();
 
-        if (q_s_sets[u] == true) continue;
-        q_s_sets[u] = true;
+        if (q_s_sets[u] == true) continue;  // jesli wierzcholek jest juz w zbiorze s to pomijamy go
+        q_s_sets[u] = true;                 // inaczej dodaj go do zbioru s
 
-        auto iterator = graph[u].begin();
+        auto iterator = graph[u].begin();   // pierwszy sasiad wierzcholka u
 
         while(iterator != graph[u].end()){
-            int v = (*iterator).destination;
-            int c = (*iterator).weight;
+            int number = (*iterator).destination;    //  numer sasiadujego wierzcholka
+            int weight = (*iterator).weight;         //  waga sasiadujacego wierzcholka
 
-            if(distances[v] > distances[u] + c){
-                distances[v] = distances[u] + c;
-                previous[v] = u;
-                queue.push(make_pair(distances[v], v)); //wrzucenie do kolejki zaktualizowany koszt dojscia do syna u(v) i samego numeru wierzcholka v
+            if(distances[number] > distances[u] + weight){    //  jesli dotychczasowy dystans jest mniejszy od kosztu dojscia do u + waga krawedzie pomiedzy u i v
+                distances[number] = distances[u] + weight;    //  zaktualizuj wartosc dystansu
+                previous[number] = u;                    //  dodaj poprzednika
+                queue.push(make_pair(distances[number], number)); //  wrzucenie do kolejki zaktualizowany koszt dojscia i samego numeru wierzcholka v
             }
             iterator++;
         }
