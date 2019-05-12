@@ -47,6 +47,8 @@ public:
 
     void dijkstra();
 
+    void ford_bellman();
+
 };
 
 

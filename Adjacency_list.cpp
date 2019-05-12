@@ -219,7 +219,7 @@ void Adjacency_list::dijkstra() {
     }
 
     for (int j = 0; j < this->nodes; ++j) {
-        cout << "Dojscie do wierzchlka " << j << ": " << start_node_SP;
+        cout << "Dojscie do wierzcholka " << j << ": " << start_node_SP;
         print_path(previous, j);
         cout << "   Koszt: " << distances[j] << endl;
     }
@@ -235,6 +235,67 @@ void Adjacency_list::print_path(int *previous, int i) {
     if (previous[i] == -1) return;
     print_path(previous, previous[i]);
     cout << " -> " << i;
+}
+
+void Adjacency_list::ford_bellman() {
+
+
+    int node = this->start_node_SP;
+
+    int *distances = new int[this->nodes];      // tutaj przechowywane sa koszta
+    int *previous = new int[this->nodes];       // tutaj przechowywani sa poprzednicy
+
+    for (int i = 0; i < this->nodes; i++) {
+        previous[i] = -1;
+        distances[i] = MAX;
+    }
+
+    distances[node] = 0; //koszt dojscia do siebie samego to 0
+
+    for (int i = 1; i < this->nodes; ++i) { 	    // pętlę główną wykonujemy co najwyżej n - 1 razy
+        bool test = true;                           // zmienna przechowuje informację o zmianach
+        for (int j = 0; j < this->nodes; ++j) {
+            auto iterator = graph[j].begin();
+            while(iterator != graph[j].end()){      // Przeglądamy listę sąsiadów wierzchołka x
+                if(distances[(*iterator).destination] > distances[j] + (*iterator).weight){ // Sprawdzamy warunek relaksacji
+                    test = false;
+                    distances[(*iterator).destination] = distances[j] + (*iterator).weight;
+                    previous[(*iterator).destination] = j;
+                }
+                iterator++;
+            }
+        }
+        if(test){
+            for (int j = 0; j < this->nodes; ++j) {
+                cout << "Dojscie do wierzcholka " << j << ": " << start_node_SP;
+                print_path(previous, j);
+                cout << "   Koszt: " << distances[j] << endl;
+            }
+
+            return;
+        }
+    }
+
+    for (int j = 0; j< this->nodes; ++j) {
+        auto iterator = graph[j].begin();
+        while(iterator != graph[j].end()){      // Przeglądamy listę sąsiadów wierzchołka x
+            if(distances[(*iterator).destination] > distances[j] + (*iterator).weight){ // Sprawdzamy warunek relaksacji
+                cout << "Ujemny cykl" << endl;
+                return;
+            }
+            iterator++;
+        }
+    }
+
+    for (int j = 0; j < this->nodes; ++j) {
+        cout << "Dojscie do wierzcholka " << j << ": " << start_node_SP;
+        print_path(previous, j);
+        cout << "   Koszt: " << distances[j] << endl;
+    }
+
+    delete[] distances;
+    delete[] previous;
+    clear();
 }
 
 
