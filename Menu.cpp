@@ -125,7 +125,8 @@ void Menu::menuShortestPath() {
 
             case '5': // algorytm forda-bellmana
                 al.ford_bellman();
-//                am.fordBellman();
+                cout << endl;
+                am.ford_bellman();
                 break;
         }
 

@@ -204,14 +204,16 @@ void Adjacency_list::dijkstra() {
 
         auto iterator = graph[u].begin();   // pierwszy sasiad wierzcholka u
 
-        while(iterator != graph[u].end()){
+        while (iterator != graph[u].end()) {
             int number = (*iterator).destination;    //  numer sasiadujego wierzcholka
             int weight = (*iterator).weight;         //  waga sasiadujacego wierzcholka
 
-            if(distances[number] > distances[u] + weight){    //  jesli dotychczasowy dystans jest mniejszy od kosztu dojscia do u + waga krawedzie pomiedzy u i v
+            if (distances[number] > distances[u] +
+                                    weight) {    //  jesli dotychczasowy dystans jest mniejszy od kosztu dojscia do u + waga krawedzie pomiedzy u i v
                 distances[number] = distances[u] + weight;    //  zaktualizuj wartosc dystansu
                 previous[number] = u;                    //  dodaj poprzednika
-                queue.push(make_pair(distances[number], number)); //  wrzucenie do kolejki zaktualizowany koszt dojscia i samego numeru wierzcholka v
+                queue.push(make_pair(distances[number],
+                                     number)); //  wrzucenie do kolejki zaktualizowany koszt dojscia i samego numeru wierzcholka v
             }
             iterator++;
         }
@@ -239,7 +241,6 @@ void Adjacency_list::print_path(int *previous, int i) {
 
 void Adjacency_list::ford_bellman() {
 
-
     int node = this->start_node_SP;
 
     int *distances = new int[this->nodes];      // tutaj przechowywane sa koszta
@@ -252,12 +253,13 @@ void Adjacency_list::ford_bellman() {
 
     distances[node] = 0; //koszt dojscia do siebie samego to 0
 
-    for (int i = 1; i < this->nodes; ++i) { 	    // pętlę główną wykonujemy co najwyżej n - 1 razy
+    for (int i = 1; i < this->nodes; ++i) {        // pętlę główną wykonujemy co najwyżej n - 1 razy
         bool test = true;                           // zmienna przechowuje informację o zmianach
         for (int j = 0; j < this->nodes; ++j) {
             auto iterator = graph[j].begin();
-            while(iterator != graph[j].end()){      // Przeglądamy listę sąsiadów wierzchołka x
-                if(distances[(*iterator).destination] > distances[j] + (*iterator).weight){ // Sprawdzamy warunek relaksacji
+            while (iterator != graph[j].end()) {      // Przeglądamy listę sąsiadów wierzchołka x
+                if (distances[(*iterator).destination] >
+                    distances[j] + (*iterator).weight) { // Sprawdzamy warunek relaksacji
                     test = false;
                     distances[(*iterator).destination] = distances[j] + (*iterator).weight;
                     previous[(*iterator).destination] = j;
@@ -265,7 +267,7 @@ void Adjacency_list::ford_bellman() {
                 iterator++;
             }
         }
-        if(test){
+        if (test) {
             for (int j = 0; j < this->nodes; ++j) {
                 cout << "Dojscie do wierzcholka " << j << ": " << start_node_SP;
                 print_path(previous, j);
@@ -276,10 +278,11 @@ void Adjacency_list::ford_bellman() {
         }
     }
 
-    for (int j = 0; j< this->nodes; ++j) {
+    for (int j = 0; j < this->nodes; ++j) {
         auto iterator = graph[j].begin();
-        while(iterator != graph[j].end()){      // Przeglądamy listę sąsiadów wierzchołka x
-            if(distances[(*iterator).destination] > distances[j] + (*iterator).weight){ // Sprawdzamy warunek relaksacji
+        while (iterator != graph[j].end()) {      // Przeglądamy listę sąsiadów wierzchołka x
+            if (distances[(*iterator).destination] >
+                distances[j] + (*iterator).weight) { // Sprawdzamy warunek relaksacji
                 cout << "Ujemny cykl" << endl;
                 return;
             }
