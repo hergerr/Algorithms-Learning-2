@@ -147,6 +147,7 @@ void Adjacency_list::kruskal() {
     int weight = 0;
 
     priority_queue<Edge, vector<Edge>, CompareWeight> edges_queue;  //kolejka priorytetowa - typ przechowywany, kontener, funktor
+    edges_queue.push(Edge(1,1,1));
 
     for (int i = 0; i < this->graph.size(); i++) {
         for (Edge edge : this->graph[i]) {
@@ -173,6 +174,8 @@ void Adjacency_list::kruskal() {
 
     }
     cout << "Waga: " << weight << endl;
+
+    clear();
 }
 
 void Adjacency_list::dijkstra() {
