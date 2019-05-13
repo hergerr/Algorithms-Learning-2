@@ -146,25 +146,24 @@ void Adjacency_list::kruskal() {
     DisjointSet disjointSet(this->nodes);
     int weight = 0;
 
-    priority_queue<Edge, vector<Edge>, CompareWeight> edges_queue;  //kolejka priorytetowa - typ przechowywany, kontener, funktor
-    edges_queue.push(Edge(1,1,1));
+    priority_queue <Edge, vector<Edge>, CompareWeight> queue;
 
     for (int i = 0; i < this->graph.size(); i++) {
         for (Edge edge : this->graph[i]) {
-            edges_queue.push(edge);   //dodanie wszystkich krawedzi
+            queue.push(edge);   //dodanie wszystkich krawedzi
         }
     }
 
-    int loop_index = edges_queue.size();    //zdefiniowanie zmiennej ktora trzyma poczatkowa wielkosc kolejki
+    int loop_index = queue.size();    //zdefiniowanie zmiennej ktora trzyma poczatkowa wielkosc kolejki
 
     for (int i = 0; i < loop_index; ++i) {
-        int src = edges_queue.top().source;
-        int dst = edges_queue.top().destination;
-        int single_weight = edges_queue.top().weight;
+        int src = queue.top().source;
+        int dst = queue.top().destination;
+        int single_weight = queue.top().weight;
 
         int set_v1 = disjointSet.find_parent(src);
         int set_v2 = disjointSet.find_parent(dst);
-        edges_queue.pop();
+        queue.pop();
 
         if (set_v1 != set_v2) {
             cout << src << " -> " << dst << " Waga: " << single_weight << endl;

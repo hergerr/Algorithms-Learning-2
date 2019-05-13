@@ -84,9 +84,9 @@ void Menu::menuMST() {
 
             case '5': // algorytm kruskala
                 cout << endl;
-                al.kruskal();
-                cout << endl;
                 am.kruskal();
+                cout << endl;
+                al.kruskal();
                 break;
         }
 
