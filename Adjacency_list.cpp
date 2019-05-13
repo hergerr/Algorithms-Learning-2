@@ -378,7 +378,6 @@ vector<list<Edge>> Adjacency_list::generate(int nodes, double density) {
 
     delete[] visited;
     delete[] exists;
-    print();
     return this->graph;
 }
 

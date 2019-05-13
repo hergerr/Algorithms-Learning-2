@@ -94,7 +94,7 @@ void Adjacency_matrix::prim() {
     cout << "Reprezentacja macierzowa - wynikowe MST uzyskane algorytmem Prima" << endl;
 
     bool *visited = new bool[this->nodes];          // tablica informujaca o tym, czy dany wierzcholek byl odwiedzony
-    priority_queue<Edge, vector<Edge>, CompareWeight> queue;
+    priority_queue <Edge, vector<Edge>, CompareWeight> queue;
 
     for (int i = 0; i < this->nodes; i++) {
         visited[i] = false;
@@ -154,7 +154,7 @@ void Adjacency_matrix::kruskal() {
     DisjointSet disjointSet(this->nodes);
     int weight = 0;
 
-    priority_queue<Edge, vector<Edge>, CompareWeight> edges_queue;  //kolejka priorytetowa - typ przechowywany, kontener, funktor
+    priority_queue <Edge, vector<Edge>, CompareWeight> edges_queue;  //kolejka priorytetowa - typ przechowywany, kontener, funktor
 
     for (int i = 0; i < this->nodes; ++i) {
         for (int j = 0; j < this->nodes; ++j) {
@@ -188,7 +188,8 @@ void Adjacency_matrix::kruskal() {
 }
 
 void Adjacency_matrix::dijkstra() {
-    priority_queue<pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > > queue;  //kolejka priorytetowa - typ przechowywany, kontener, funktor
+    priority_queue < pair < int, int >, vector < pair < int, int > >, greater < pair < int, int > > >
+                                                                                            queue;  //kolejka priorytetowa - typ przechowywany, kontener, funktor
 
 
     int node = this->start_node_SP;
@@ -323,4 +324,34 @@ void Adjacency_matrix::ford_bellman() {
     delete[] distances;
     delete[] previous;
     clear();
+}
+
+void Adjacency_matrix::generate(vector <list<Edge>> g) {
+    clear();
+
+    this->nodes = g.size();
+
+    this->graph = new int *[this->nodes];
+
+    for (int k = 0; k < this->nodes; k++) {
+        this->graph[k] = new int[this->nodes];
+    }
+
+    for (int k = 0; k < this->nodes; k++) {
+        for (int l = 0; l < this->nodes; l++) {
+            this->graph[k][l] = 0;
+        }
+    }
+
+    for (int i = 0; i < g.size(); i++) {    //dodawanie krawedzi z parametru do macierzy
+        Edge edge;
+        auto iter = g[i].begin();
+        while (iter != g[i].end()) {
+            edge.source = (*iter).source;
+            edge.destination = (*iter).destination;
+            edge.weight = (*iter).weight;
+            add_edge(edge.source, edge.destination, edge.weight);
+            iter++;
+        }
+    }
 }

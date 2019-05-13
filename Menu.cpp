@@ -31,15 +31,18 @@ void Menu::displayMenuShortestPath() {
 
 void Menu::menuMST() {
     char option;
-    int value;
     string file_name;
     Adjacency_list al(false);
     Adjacency_matrix am(false);
+    vector<list<Edge>> gph;
+    int node_number;
+    double dens;
 
-    do{
+
+    do {
         displayMenuMST();
         cin >> option;
-        switch (option){
+        switch (option) {
             case '1': // wczytanie z pliku
                 cout << "Podaj nazwe pliku: ";
                 cin >> file_name;
@@ -54,12 +57,21 @@ void Menu::menuMST() {
                 break;
 
             case '2': // wygenerowanie losowego grafu
+                cout << "Podaj ilosc wierzcholkow i gestosc grafu: " << endl;
+                cin >> node_number >> dens;
+
+                gph = al.generate(node_number, dens);
+                al.print();
+                cout << endl;
+                am.generate(gph);
+                am.print();
                 break;
 
             case '3': // wyswietlenie
                 cout << endl;
                 al.print();
                 cout << endl;
+                am.print();
                 am.print();
                 break;
 
@@ -78,26 +90,26 @@ void Menu::menuMST() {
                 break;
         }
 
-    }
-    while (option != '0');
+    } while (option != '0');
 
 }
 
 void Menu::menuShortestPath() {
-    // Dla algorytmow SP graf jest skierowany
-    Adjacency_list al(true);
+    Adjacency_list al(true);     // Dla algorytmow SP graf jest skierowany
     Adjacency_matrix am(true);
     vector<list<Edge>> g;
+    vector<list<Edge>> gph;
 
     char opt;
     string fileName;
-    int index, value;
+    int node_number;
+    double dens;
 
-    do{
+    do {
         displayMenuShortestPath();
         cin >> opt;
         cout << endl;
-        switch (opt){
+        switch (opt) {
             case '1': // wczytanie z pliku
                 cout << "Podaj nazwe pliku:";
                 cin >> fileName;
@@ -110,7 +122,14 @@ void Menu::menuShortestPath() {
                 break;
 
             case '2': // wygenerowanie losowego grafu
-                al.generate(100, 0.25);
+                cout << "Podaj ilosc wierzcholkow i gestosc grafu: " << endl;
+                cin >> node_number >> dens;
+
+                gph = al.generate(node_number, dens);
+                al.print();
+                cout << endl;
+                am.generate(gph);
+                am.print();
                 break;
 
             case '3': // wyswietlenie
