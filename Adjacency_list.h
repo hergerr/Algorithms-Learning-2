@@ -39,6 +39,8 @@ public:
 
     void print_path(int previous[], int i);
 
+    vector<list<Edge>> generate(int nodes, double density);
+
     void clear();
 
     void prim();

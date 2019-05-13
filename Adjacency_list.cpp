@@ -301,4 +301,85 @@ void Adjacency_list::ford_bellman() {
     clear();
 }
 
+vector<list<Edge>> Adjacency_list::generate(int nodes, double density) {
+    if (directed) { //ustalenie liczby krawedzi
+        this->edges = (int) (density * nodes * (nodes - 1));    //wzor na liczbe krawedzi w grafie pelnym * gestosc
+    } else {
+        this->edges = (int) ((density * nodes * (nodes - 1)) / 2);
+    }
+
+    this->nodes = nodes;
+    this->graph.resize(this->nodes);
+
+    bool **exists = new bool *[this->graph.size()];
+
+    for (int i = 0; i < this->graph.size(); i++) {
+        exists[i] = new bool[this->graph.size()];
+    }
+
+    for (int i = 0; i < this->graph.size(); i++) {
+        for (int j = 0; j < this->graph.size(); j++) {
+            exists[i][j] = false;
+        }
+    }
+
+    bool *visited = new bool[this->graph.size()];
+
+    for (int i = 0; i < this->graph.size(); i++) {     // na poczatku wszystie wierzcholki nieodwiedzone
+
+        visited[i] = false;
+    }
+
+    int node = rand() % this->nodes;    // generowanie drzewa rozpinajacego
+
+    Edge edge;
+
+    for (int i = 0; i < this->graph.size() - 1; i++) {  //krawedzi jest o 1 mniej od wierzcholkow
+        if (!visited[node]) {
+            visited[node] = true;            // ustawia wierzcholek na odwiedzony
+            edge.source = node;
+            do {
+                edge.destination = rand() % nodes;     // losuje do ktorego wierzcholka isc
+            } while (visited[edge.destination]);
+
+            edge.weight = rand() % 100;                                 // losuje wage
+
+            add_edge(edge.source, edge.destination, edge.weight);       // dodaje wierzcholek do grafu
+            exists[edge.source][edge.destination] = true;
+            if (!directed) {
+                exists[edge.destination][edge.source] = true;
+            }
+        }
+        node = edge.destination;
+    }
+
+    for (int i = this->graph.size() - 1; i < this->edges; i++) {     // dodanie pozostalych krawedzi
+        if (!directed) {
+            do {
+                edge.source = rand() % nodes;
+                edge.destination = rand() % nodes;
+            } while (edge.source == edge.destination || exists[edge.source][edge.destination] ||
+                     exists[edge.destination][edge.source]);
+        } else {
+            do {
+                edge.source = rand() % nodes;
+                edge.destination = rand() % nodes;
+            } while (edge.source == edge.destination || exists[edge.source][edge.destination]);
+        }
+
+        edge.weight = rand() % 100;
+
+        add_edge(edge.source, edge.destination, edge.weight);
+        exists[edge.source][edge.destination] = true;
+        if (!directed) {
+            exists[edge.destination][edge.source] = true;
+        }
+    }
+
+    delete[] visited;
+    delete[] exists;
+    print();
+    return this->graph;
+}
+
 

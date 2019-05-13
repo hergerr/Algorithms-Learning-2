@@ -110,6 +110,7 @@ void Menu::menuShortestPath() {
                 break;
 
             case '2': // wygenerowanie losowego grafu
+                al.generate(100, 0.25);
                 break;
 
             case '3': // wyswietlenie
