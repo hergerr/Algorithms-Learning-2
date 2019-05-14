@@ -22,8 +22,8 @@ DisjointSet::DisjointSet(int size) {
 }
 
 DisjointSet::~DisjointSet() {
-    delete [] parent;
-    delete [] rank;
+//    delete [] parent;
+//    delete [] rank;
     this->size = 0;
 }
 

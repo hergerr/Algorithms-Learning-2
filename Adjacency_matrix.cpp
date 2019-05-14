@@ -92,17 +92,14 @@ void Adjacency_matrix::print() {
 
 void Adjacency_matrix::prim() {
     cout << "Reprezentacja macierzowa - wynikowe MST uzyskane algorytmem Prima" << endl;
-
+    int node = 0;       // numer wierzcholka - zaczynamy od 0
+    int weight = 0;     // waga calego drzewa
     bool *visited = new bool[this->nodes];          // tablica informujaca o tym, czy dany wierzcholek byl odwiedzony
     priority_queue <Edge, vector<Edge>, CompareWeight> queue;
 
     for (int i = 0; i < this->nodes; i++) {
         visited[i] = false;
     }
-
-
-    int node = 0;       // numer wierzcholka - zaczynamy od 0
-    int weight = 0;     // waga calego drzewa
 
     for (int i = 0; i < this->nodes; i++) {
         Edge minimal_weight_edge;
@@ -142,7 +139,7 @@ void Adjacency_matrix::prim() {
     }
 
 
-    printf("\nSuma wag: %d\n", weight);    // wyswietlenie wag
+    cout << endl << "Suma wag: " << weight;    // wyswietlenie wagi
 
     delete[] visited;    //czyszczenie
     clear();

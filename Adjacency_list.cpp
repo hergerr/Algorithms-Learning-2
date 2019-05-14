@@ -75,59 +75,57 @@ void Adjacency_list::add_edge(int src, int dest, int weight) {
 void Adjacency_list::prim() {
     cout << "Reprezentacja listowa - wynikowe MST uzyskane algorytmem Prima" << endl;
 
-    bool *visited = new bool[this->graph.size()];       // alokacja tablicy odwiedzynych wierzcholkow
-    int node = 0;                                       // poczatkowy wierzcholek
-    int weight = 0;                                    // waga calego drzewa
+    int node = 0;       // numer wierzcholka - zaczynamy od 0
+    int weight = 0;     // waga calego drzewa
+    bool *visited = new bool[this->nodes];          // tablica informujaca o tym, czy dany wierzcholek byl odwiedzony
     priority_queue<Edge, vector<Edge>, CompareWeight> queue;
 
-
-    for (int i = 0; i < this->graph.size(); i++) {
+    for (int i = 0; i < this->nodes; i++) {
         visited[i] = false;
     }
 
-
-    for (int j = 0; j < this->graph.size(); ++j) {
+    for (int i = 0; i < this->nodes; i++) {
         Edge minimal_weight_edge;
-
-        auto iterator = this->graph[node].begin();
+        Edge edge;
 
         if (!visited[node]) {
-            do {
-                if (!visited[(*iterator).destination]) {    //unikniecie dodania do kolejki odwiedzonych wierzcholkow
-                    queue.push(*iterator);
-                }
+// dodanie nieodwiedzonych do kolejki priorytetowej
+            auto iterator = graph[node].begin();
+            while (iterator != graph[node].end()) {
+                edge.source = node;
+                edge.destination = (*iterator).destination;
+                edge.weight = (*iterator).weight;
+                queue.push(edge);
                 ++iterator;
-            } while (iterator != this->graph[node].end());
-
+            }
 
             minimal_weight_edge = queue.top();
             queue.pop();
 
-            if (!visited[minimal_weight_edge.destination]) {   //jako ze graf jest niekierowany trzeba dodac 2 krawedzie na raz
-                cout << minimal_weight_edge.source << " -> " << minimal_weight_edge.destination << " Waga: "
+            if (!visited[minimal_weight_edge.destination]) {
+                cout << minimal_weight_edge.source << " -> " << minimal_weight_edge.destination << "  Waga: "
                      << minimal_weight_edge.weight << endl;
                 weight += minimal_weight_edge.weight;
             }
-
-            visited[node] = true;
-
-        } else { // jesli node jest nieodwiedzony to wszystko juz jest w kolejce
+            visited[node] = true;     // oznaczenie wierzcholka jako odwiedzony
+        } else {    //jesli byl odwiedzony to jego krawedzie juz sa w kolejce
             minimal_weight_edge = queue.top();
             queue.pop();
 
-            if (!visited[minimal_weight_edge.destination]) {//zabezpieczenie przed dodanie krawedzi do odwiedzonego wierzcholka
-                cout << minimal_weight_edge.source << " -> " << minimal_weight_edge.destination << " Waga: "
+            if (!visited[minimal_weight_edge.destination]) {
+                cout << minimal_weight_edge.source << " -> " << minimal_weight_edge.destination << "  Waga: "
                      << minimal_weight_edge.weight << endl;
                 weight += minimal_weight_edge.weight;
             }
-            j--;
+            i--;    //skoro byl juz odwiedzony to nalezy zmienszyc indeks, inaczej petla by nie przeszla po wszytkich wierzcholkach
         }
-        node = minimal_weight_edge.destination;
+        node = minimal_weight_edge.destination;    // przejscie do kolejnego wierzcholka
     }
 
-    cout << endl << "Suma wag: " << weight << endl;
 
-    delete[] visited;
+    cout << endl << "Suma wag: " << weight;    // wyswietlenie wagi
+
+    delete[] visited;    //czyszczenie
     clear();
 }
 
@@ -146,7 +144,7 @@ void Adjacency_list::kruskal() {
     DisjointSet disjointSet(this->nodes);
     int weight = 0;
 
-    priority_queue <Edge, vector<Edge>, CompareWeight> queue;
+    priority_queue<Edge, vector<Edge>, CompareWeight> queue;
 
     for (int i = 0; i < this->graph.size(); i++) {
         for (Edge edge : this->graph[i]) {
@@ -344,7 +342,7 @@ vector<list<Edge>> Adjacency_list::generate(int nodes, double density) {
                 edge.destination = rand() % nodes;     // losuje do ktorego wierzcholka isc
             } while (visited[edge.destination]);
 
-            edge.weight = rand() % 100;                                 // losuje wage
+            edge.weight = (rand() % 100) + 1;                                 // losuje wage
 
             add_edge(edge.source, edge.destination, edge.weight);       // dodaje wierzcholek do grafu
             exists[edge.source][edge.destination] = true;
@@ -369,7 +367,7 @@ vector<list<Edge>> Adjacency_list::generate(int nodes, double density) {
             } while (edge.source == edge.destination || exists[edge.source][edge.destination]);
         }
 
-        edge.weight = rand() % 100;
+        edge.weight = (rand() % 100) + 1;
 
         add_edge(edge.source, edge.destination, edge.weight);
         exists[edge.source][edge.destination] = true;

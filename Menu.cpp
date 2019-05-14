@@ -18,7 +18,7 @@ void Menu::displayMenuMST() {
 
 void Menu::displayMenuShortestPath() {
     cout << endl;
-    cout << "=== Wyznaczanie najkrótszej ścieżki w grafie ===" << endl;
+    cout << "=== Wyznaczanie najkritszej sciezki w grafie ===" << endl;
     cout << "1. Wczytaj z pliku" << endl;
     cout << "2. Wygeneruj graf losowo" << endl;
     cout << "3. Wyswietl listowo i macierzowo na ekranie" << endl;
