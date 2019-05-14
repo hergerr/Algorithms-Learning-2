@@ -3,6 +3,7 @@
 #include "Adjacency_list.h"
 #include "Adjacency_matrix.h"
 #include "Menu.h"
+#include "Test.h"
 
 using namespace std;
 
@@ -15,6 +16,7 @@ int main() {
 //    list->print();
 
     Menu menu;
+    Test test;
 
     char option;
     do{
@@ -35,6 +37,10 @@ int main() {
 
             case '2':
                 menu.menuShortestPath();
+                break;
+
+            case '3':
+                test.run_tests();
                 break;
         }
 
