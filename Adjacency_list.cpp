@@ -88,8 +88,7 @@ void Adjacency_list::prim() {
         Edge minimal_weight_edge;
         Edge edge;
 
-        if (!visited[node]) {
-// dodanie nieodwiedzonych do kolejki priorytetowej
+        if (!visited[node]) {   // dodanie nieodwiedzonych do kolejki priorytetowej
             auto iterator = graph[node].begin();
             while (iterator != graph[node].end()) {
                 edge.source = node;
@@ -168,10 +167,9 @@ void Adjacency_list::kruskal() {
             weight += single_weight;
             disjointSet.make_union(set_v1, set_v2);
         }
-
     }
-    cout << "Waga: " << weight << endl;
 
+    cout << "Waga: " << weight << endl;
     clear();
 }
 

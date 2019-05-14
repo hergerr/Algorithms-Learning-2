@@ -95,7 +95,7 @@ void Adjacency_matrix::prim() {
     int node = 0;       // numer wierzcholka - zaczynamy od 0
     int weight = 0;     // waga calego drzewa
     bool *visited = new bool[this->nodes];          // tablica informujaca o tym, czy dany wierzcholek byl odwiedzony
-    priority_queue <Edge, vector<Edge>, CompareWeight> queue;
+    priority_queue<Edge, vector<Edge>, CompareWeight> queue;
 
     for (int i = 0; i < this->nodes; i++) {
         visited[i] = false;
@@ -151,7 +151,7 @@ void Adjacency_matrix::kruskal() {
     DisjointSet disjointSet(this->nodes);
     int weight = 0;
 
-    priority_queue <Edge, vector<Edge>, CompareWeight> queue;
+    priority_queue<Edge, vector<Edge>, CompareWeight> queue;
 
     for (int i = 0; i < this->nodes; ++i) {
         for (int j = 0; j < this->nodes; ++j) {
@@ -176,17 +176,15 @@ void Adjacency_matrix::kruskal() {
             weight += single_weight;
             disjointSet.make_union(set_v1, set_v2);
         }
-
     }
 
     cout << "Waga: " << weight << endl;
     clear();
-
 }
 
 void Adjacency_matrix::dijkstra() {
-    priority_queue < pair < int, int >, vector < pair < int, int > >, greater < pair < int, int > > >
-                                                                                            queue;  //kolejka priorytetowa - typ przechowywany, kontener, funktor
+    priority_queue<pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > >
+            queue;  //kolejka priorytetowa - typ przechowywany, kontener, funktor
 
 
     int node = this->start_node_SP;
@@ -323,7 +321,7 @@ void Adjacency_matrix::ford_bellman() {
     clear();
 }
 
-void Adjacency_matrix::generate(vector <list<Edge>> g) {
+void Adjacency_matrix::generate(vector<list<Edge>> g) {
     clear();
 
     this->nodes = g.size();
