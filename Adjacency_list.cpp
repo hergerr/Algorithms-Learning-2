@@ -174,6 +174,8 @@ void Adjacency_list::kruskal() {
 }
 
 void Adjacency_list::dijkstra() {
+    cout << "Reprezentacja listowa - wynikowe SP uzyskane algorytmem Dijkstry" << endl;
+
     priority_queue<pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > > queue;  //kolejka priorytetowa - typ przechowywany, kontener, funktor
 
 
@@ -238,7 +240,7 @@ void Adjacency_list::print_path(int *previous, int i) {
 }
 
 void Adjacency_list::ford_bellman() {
-
+    cout << "Reprezentacja listowa - wynikowe SP uzyskane algorytmem Forda-Bellmana" << endl;
     int node = this->start_node_SP;
 
     int *distances = new int[this->nodes];      // tutaj przechowywane sa koszta

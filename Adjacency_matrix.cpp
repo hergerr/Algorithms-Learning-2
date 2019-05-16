@@ -183,6 +183,7 @@ void Adjacency_matrix::kruskal() {
 }
 
 void Adjacency_matrix::dijkstra() {
+    cout << "Reprezentacja macierzowa - wynikowe SP uzyskane algorytmem Dijkstry" << endl;
     priority_queue<pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > >
             queue;  //kolejka priorytetowa - typ przechowywany, kontener, funktor
 
@@ -254,6 +255,7 @@ void Adjacency_matrix::print_path(int *previous, int i) {
 }
 
 void Adjacency_matrix::ford_bellman() {
+    cout << "Reprezentacja macierzowa - wynikowe SP uzyskane algorytmem Forda-Bellmana" << endl;
     int node = this->start_node_SP;
 
     int *distances = new int[this->nodes];      // tutaj przechowywane sa koszta
